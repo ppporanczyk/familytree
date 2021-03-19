@@ -1,0 +1,16 @@
+{% extends "users/base_template.html" %}
+{% block base %}
+<div class="jumbotron">
+    <form method="POST">
+        {% csrf_token %}
+        <h1 class="">Are you sure you want to delete "{{object.name_tree}}"? All people and relations between them will be permanently removed.</h1>
+
+
+        <div class="container py-3">
+            <p class=""> <button type="submit" class="btn btn-danger">Yes, delete</button>
+            <a class="text-success px-5 my-auto" href="{% url 'tree-detail' object.id %}"><button type="button" class="btn btn-success">Cancel</button></a></p>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

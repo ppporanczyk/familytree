@@ -1,0 +1,48 @@
+{% extends "users/base_template.html" %}
+{%  load static %}
+{% block base %}
+
+    <div class="container text-center py-4">
+          <div class="row py-3">
+            <div class="col-sm-5">
+              <img src="{%  static 'tree-crown.png' %}"  class="img-responsive" style="width:100%" alt="Image">
+            </div>
+              <div class="col-sm-2"></div>
+            <div class="col-sm-5 py-5" >
+                {% if user.is_authenticated %}
+                    <h2 class="bg-light text-dark ">Hello {{ user.username }}!</h2>
+                    <h5 class="bg-light text-dark ">Nothing new has happened in your family? Remember to add changes!</h5>
+                {%  else %}
+                    <h2 class="bg-light text-dark ">Welcome at our website!</h2>
+                    <h5 class="bg-light text-dark ">Famtree allow you to easily recreate the story of each family member and generate statistics.
+                    You will easily understand how to use our application due to its simple design.</h5>
+                {% endif %}
+
+            </div>
+          </div>
+         <div class="row py-3">
+            <div class="col-sm-5 py-5">
+                {% if user.is_authenticated %}
+                    <div class="container-fluid-sm "><h4 class="font-weight-bold">Manage your trees</h4>
+                <a href="{% url 'profile' %}" class=""><button type="button" class="btn  btn-success text-white my-2">Here</button></a></div>
+                    <div class="container-fluid-sm "><h5 class="">.. or just explore created trees by another users.</h5>
+                    <a href="{% url 'tree-all' %}" class=""><button type="button" class="btn btn-info text-white my-2">See now</button></a></div>
+
+                {%  else %}
+                    <div class="container-fluid-sm "><h5 class="">Don't hesitate if you want to join us!</h5>
+                <a href="{% url 'register' %}" class=""><button type="button" class="btn  btn-success text-white my-2">Sign Up Now</button></a></div>
+                    <div class="container-fluid-sm"><a href="{% url 'login' %}" class=""><button type="button" class="btn btn-link text-primary my-2">Have you an account? Sign In </button></a></div>
+
+                <div class="container-fluid-sm "><h5 class="">.. or just explore created trees by our users.</h5>
+                    <a href="{% url 'tree-all' %}" class=""><button type="button" class="btn btn-info text-white my-2">See now</button></a></div>
+            {% endif %}
+            </div>
+              <div class="col-sm-2"></div>
+            <div class="col-sm-5">
+              <img src="{%  static 'family-children.png' %}"  class="img-responsive" style="width:100%; opacity: 0.8" alt="Image">
+            </div>
+          </div>
+</div><br>
+
+
+{% endblock %}

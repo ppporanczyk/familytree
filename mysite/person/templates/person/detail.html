@@ -1,0 +1,90 @@
+{% extends 'users/base_template.html' %}
+{% load crispy_forms_tags %}
+{% block base %}
+
+        <div class="container-fluid-sm my-3">
+              <div class="row mx-1 my-1">
+                    <div class="col-3 px-4">
+                        <a href="{% url 'tree-detail' object.family_tree_id %}"><h4 class="font-weight-bold text-uppercase text-dark" > {{ object.family_tree }} </h4></a>
+                    </div>
+                    {% if own %}
+                    <div class="col-3 my-auto px-2">
+                       <a href="{% url 'person-create' object.family_tree_id%}"><button type="button" class="btn btn-secondary">Add next person</button></a>
+                    </div>
+                    <div class="col-3 my-auto px-2">
+                       <a href="{% url 'person-update' object.family_tree_id object.id%}"><button type="button" class="btn btn-secondary">Update your person</button></a>
+                    </div>
+                    <div class="col-3 my-auto px-2">
+                        <a href="{% url 'person-delete' object.family_tree_id object.id%}"><button type="button" class="btn btn-secondary">Delete your person</button></a>
+                    </div>
+                  {% endif %}
+              </div>
+        </div>
+
+    <div class="container-sm py-3">
+    <table class="table">
+        <tbody>
+      <tr>
+          <td>Name</td><td><strong>{{object.first_name}} {{object.last_name}}</strong></td></tr>
+      <tr>
+          {% if age %}<td>Age</td><td>{{ age }}</td></tr>{% endif %}
+        {% if parents %}
+            {% regroup parents by status as status_list %}
+            {% for status in status_list %}
+                <tr><td>{{ status.grouper }}</td>
+                {%  for parent in status.list %}
+                    <td>
+                        <a href="{% url 'person-detail' object.family_tree_id parent.person.id %}">{{ parent.person.first_name }} {{ parent.person.last_name }}</a></td>
+                    {% if parent.age %}<td>{{ parent.age }} y.o.{% endif %}</td>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+        {% if partner %}
+            {% regroup partner by status as status_list %}
+            {% for status in status_list %}
+                <tr>
+                {%  for partner in status.list %}
+                    <td>{{ status.grouper }}</td>
+                    <td>
+                    <a href="{% url 'person-detail' object.family_tree_id partner.person.id %}">{{ partner.person.first_name }} {{ partner.person.last_name }}</a></td>
+                    {% if partner.age %}<td>{{ partner.age }} y.o.</td>{% endif %}
+                    {% if partner.in_relation %}<td>{{ partner.in_relation }}</td>{% endif %}
+                    {% if partner.breakup %}<td>{{ partner.breakup }}</td>{% endif %}</tr>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+        {% if children %}
+            {% regroup children|dictsort:"status"  by status as status_list %}
+            {% for status in status_list %}
+                <tr>
+                {%  for child in status.list %}
+                    <td>{{ status.grouper }}:</td>
+                    <td>
+                        <a href="{% url 'person-detail' object.family_tree_id child.person.id %}">{{ child.person.first_name }} {{ child.person.last_name }}</a></td>
+                    {% if child.age %}<td> {{ child.age }} y.o.</td>{% endif %}</tr>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+        </tbody></table>
+      </div>
+
+    {% if story %}
+    <div class="container-sm">
+      <h2 class="font-weight-bold">{{ object.first_name}} {{ object.last_name}}'s story</h2>
+      <table class="table table-striped">
+        <tbody>
+        {% regroup story|dictsort:"date"  by date as date_list %}
+        {% for date in date_list %}
+          <tr>
+              {%  for sto in date.list %}
+            <td>{% if sto.date %}{{ sto.date|date:"Y-m-d"  }}{% endif %}</td>
+            <td>{% if sto.age %}({{ sto.age }}y.o.) {% endif %}</td>
+                  <td>{{sto.event}} {% if sto.status %}{{ sto.status }} {% endif %}{% if sto.rel_person %}<a href="{% url 'person-detail' object.family_tree_id sto.rel_person.id %}">{{ sto.rel_person.first_name }} {{ sto.rel_person.last_name }}</a> {% endif %}</td>
+          </tr>
+        {% endfor %}
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+{%  endblock %}

@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Famtree</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </head>
+    <body class="bg-light">
+        <div class="container-fluid-sm">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
+                <a class="navbar-brand" href="{% url 'start' %}"><img src="{%  static 'logo.png' %}"  class="img-responsive" style="width:50%; height: 50%" alt="Image"></a>
+                <div class="container-fluid">
+                      <ul class="navbar-nav ml-auto ">
+                          {% if user.is_authenticated %}
+                          <li class="nav-item">
+                              <a class="nav-link text-right" href="{% url 'profile' %}">Profile</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link text-right " href="{% url 'logout' %}">Logout</a>
+                          </li>
+                           {% else %}
+                          <li class="nav-item">
+                              <a class="nav-link text-right" href="{% url 'login' %}">Login</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link text-right " href="{% url 'register' %}">Register</a>
+                          </li>
+                           {% endif %}
+                      </ul>
+                </div>
+            </nav>
+        </div>
+
+   {% block base %}{% endblock base %}
+
+        <footer class="container-fluid-sm bg-dark navbar-dark py-3 text-center text-white ">
+            Web app - attachment for engineering thesis.
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,77 @@
+{% extends 'users/base_template.html' %}
+{% load crispy_forms_tags %}
+{% block base %}
+
+
+        <div class="container-fluid-sm my-3">
+              <div class="row mx-1 my-1 ">
+                    <div class="col-7 px-4">
+                        <h4 class="font-weight-bold text-uppercase text-dark" >{{ object.name_tree}} {% if object.access %}<span class="badge badge-pill badge-primary">Private</span>{% endif %}</h4>
+                        <p class="text-dark" >{{object.description}}</p>
+                        <p class="text-dark ">Owner: {{object.owner}}</p>
+                    </div>
+                    {% if own %}
+                    <div class="col-2 my-auto px-3">
+                        <a class="" href="{% url 'tree-update' object.id%}"><button type="button" class="btn btn-secondary">Update your tree</button></a>
+                    </div>
+                    <div class="col-3 my-auto px-4">
+                        <a class="" href="{% url 'tree-delete' object.id%}"><button type="button" class="btn btn-secondary">Delete your tree</button></a>
+                    </div>
+                  {% endif %}
+              </div>
+        </div>
+
+    <div class="container-fluid">
+        <ul class="nav nav-pills nav-justified">
+            {% if own %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'person-create' object.id%}"><button type="button" class="btn btn-secondary">Add a person</button></a>
+            </li>
+
+            {% if two_people %}
+            <li class="nav-item">
+                <a  class="nav-link" href="{% url 'relation-create' object.id%}"><button type="button" class="btn btn-secondary">Add a relation</button></a>
+            </li>
+            {% endif %}
+             {% endif %}
+            {% if relation and own %}
+            <li class="nav-item">
+                <a class="nav-link"  href="{% url 'relation-list' object.id%}"><button type="button" class="btn btn-secondary">See relations</button></a>
+            </li>
+            {% endif %}
+            {% if relation %}
+            <li class="nav-item">
+                <a  class="nav-link" href="{% url 'relation-check' object.id%}"><button type="button" class="btn btn-secondary">Check relations</button></a>
+            </li>
+            {% endif %}
+            {% if two_people %}
+            <li class="nav-item">
+            <a class="nav-link"  href="{% url 'tree-stats' object.id%}"><button type="button" class="btn btn-secondary">Statistics</button></a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+<div class="container-sm my-5">
+    <form method="get">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-info">Search</button>
+    </form>
+    <div class="list-group my-4">
+      {% if object_list %}
+
+            {% for item in object_list %}
+                <a class="list-group-item list-group-item-action" href="{% url 'person-detail' object.id item.id%}">{{item}}</a>
+            {% endfor %}
+
+    {% else %}
+        <p class="list-group-item list-group-item-action" >{% if search %}There are no results for "{{ search }}".{% else %} <a class="nav-link text-dark" href="{% url 'person-create' object.id%}">Add first person!</a> {% endif %}</p>
+    {% endif %}
+        </div>
+</div>
+
+
+      </div>
+{% endblock %}

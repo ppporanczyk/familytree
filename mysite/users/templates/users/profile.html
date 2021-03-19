@@ -1,0 +1,42 @@
+{% extends 'users/base_template.html' %}
+{% block base %}
+
+        <div class="container-sm ">
+              <div class="row  my-5">
+                    <div class="col-6 ">
+                        <h4 class="font-weight-bold text-uppercase text-dark" >{{user.username}}</h4>
+                        <p class="text-dark">{{user.email}}</p>
+                    </div>
+                    <div class="col-2">
+                        <a class="" href="{%  url 'tree-create' %}"><button type="button" class="btn btn-secondary">Add a new tree</button></a>
+                    </div>
+                    <div class="col-2">
+                        <a class="" href="{%  url 'profile-update' %}"><button type="button" class="btn btn-secondary">Update your profile</button></a>
+                    </div>
+                    <div class="col-2">
+                        <a class="" href="{%  url 'profile-delete' %}"><button type="button" class="btn btn-secondary">Delete your profile</button></a>
+                    </div>
+              </div>
+        </div>
+        <div id="accordion">
+            {%  if list_tree %}
+                {% for tree in list_tree %}
+                  <div class="card">
+                      <a class="card-link" data-toggle="collapse" href="#p{{ tree.id }}">
+                         <div class="card-header">{{ tree }} {% if tree.access %}(private){% endif %}
+
+                    </div></a>
+                    <div id="p{{ tree.id }}" class="collapse show" data-parent="#accordion">
+                      <div class="card-body" >
+                        {{ tree.description }}
+                          <a class="text-white" href="{%  url 'tree-detail' tree.id%}"><button type="button" class="btn btn-info my-center" style="float: right; ">See more</button></a>
+                      </div>
+                    </div>
+                  </div>
+                {%  endfor %}
+            {%  else %}
+        <div class="container-fluid-sm  px-3 my-4">
+        <h5 class="">No trees.</h5></div>
+            {%  endif %}
+        </div>
+ {% endblock base %}

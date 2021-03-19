@@ -1,0 +1,22 @@
+{% extends "users/base_template.html" %}
+{% block base %}
+    {% load crispy_forms_tags %}
+<div class="container my-5">
+  <h2>Nice to see you</h2>
+  <form method="POST" source="custom" name="form" redirect="true" class="needs-validation " novalidate>
+    {% csrf_token %}
+          {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Log In</button>
+  </form>
+</div>
+<div class="container-fluid mx-auto px-5  bg-secondary">
+    <div class="container-fluid py-4 ">
+    <h2 class="">Need An Account?&nbsp;</h2>
+    <a href="{% url 'register' %}" class=""><button type="button" class="btn btn-link text-body">Sign up now </button></a>
+        <a href="{% url 'tree-all' %}" class=""><button type="button" class="btn btn-link text-body">...or explore another trees </button></a>
+    </div>
+
+</div>
+
+{% endblock %}
+

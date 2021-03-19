@@ -1,0 +1,192 @@
+{% extends './stats.html' %}
+
+<script>
+{% block jquery %}
+var endpoint = '{% url "stats-chart" pk %}';
+var defaultData = [];
+var labels = [];
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        setChart()
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+
+function setChart(){
+    var ctx2 = document.getElementById("myChart2");
+    var myChart = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: '# of Votes',
+            data: defaultData,
+            backgroundColor: [
+                'rgb(196,25,61)',
+                'rgb(24,109,167)'
+            ],
+
+            borderWidth: 1
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            fontColor: 'rgb(1,1,1)',
+            fontSize: 15
+        }
+    }
+
+});
+}
+{% endblock %}
+</script>
+
+{% block content %}
+
+<div class='row py-8'>
+    <div class='col-sm-12 ' url-endpoint='{% url "stats-chart" pk %}'>
+        <div class='col-sm-6'>
+            <canvas id="myChart2" width="400" height="400" ></canvas>
+        </div>
+        <div class='col-sm-6'>
+            <canvas id="myChart" width="400" height="400" ></canvas>
+        </div>
+    </div>
+</div>
+        <div class='row py-8'>
+    <div class='col-sm-12 ' url-endpoint='{% url "stats-chart" pk %}'>
+        <div class='col-sm-12'>
+            <canvas id="myChart3" width="400" height="400" ></canvas>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
+
+<script>
+{% block jquery_age %}
+var endpoint = '{% url "stats-chart-age" pk %}';
+var defaultData = [];
+var labels = [];
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        setChartAge()
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+
+function setChartAge(){
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: '# of Votes',
+            data: defaultData,
+            backgroundColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgb(138,235,54)',
+                'rgb(195,110,5)',
+                'rgb(175,20,186)',
+                'rgb(239,239,236)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            fontColor: 'rgb(1,1,1)',
+            fontSize: 15
+        }
+    }
+});
+}
+
+{% endblock %}
+</script>
+
+<script>
+{% block jquery_name %}
+var endpoint = '{% url "stats-chart-name" pk %}';
+var defaultData = [];
+var labels = [];
+var background= [];
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        defaultData = data.default
+        background = data.background
+        setChartName()
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+
+function setChartName(){
+    var ctx = document.getElementById("myChart3");
+    var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: labels,
+        datasets: [{
+            borderColor: 'rgb(255,255,255)',
+            label: '',
+            data: defaultData,
+            backgroundColor: background,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            fontColor: 'rgb(1,1,1)',
+            fontSize: 15
+        },
+        scales: {
+            xAxes: [{
+                stacked: true,
+                gridLines: {
+                    offsetGridLines: true
+                },
+                ticks:{fontColor:'rgb(1,1,1)'}
+            }],
+            yAxes: [{
+                stacked: true,
+                ticks:{fontColor:'rgb(1,1,1)'}
+            }]
+        },
+        legend: {
+            display: false
+        }
+    }
+});
+}
+
+{% endblock %}
+</script>
+
+
+

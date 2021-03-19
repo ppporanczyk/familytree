@@ -1,0 +1,90 @@
+{% extends 'users/base_template.html' %}
+{% load crispy_forms_tags %}
+{% block base %}
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+  <body>
+  <div class="container-sm my-8">
+      <h1 class="text-dark text-center">Statistics for <a class="text-dark" href="{% url 'tree-detail' pk %}">{{ tree.name_tree }}</a>'s family tree</h1>
+</div>
+
+    <div class="container-sm my-5">
+      <h4 class="font-weight-bold">Family records</h4>
+      <table class="table table-striped">
+        <tbody>
+        {% if oldest_person %}
+          <tr>
+            <td>The oldest person</td>
+              <td>
+                  <a class="" href="{% url 'person-detail' pk oldest_person.id %}">{{oldest_person.first_name}} {{oldest_person.last_name}}</a>
+              </td>
+              <td>
+                  {{ oldest_person_age }} y.o.
+              </td>
+          </tr>
+        {% endif %}
+        {% if youngest_person %}
+          <tr>
+            <td>The youngest person </td>
+              <td>
+                  <a class="" href="{% url 'person-detail' pk youngest_person.id %}">{{youngest_person.first_name}} {{youngest_person.last_name}}</a>
+              </td>
+              <td>
+                  {{ youngest_person_age }}
+              </td>
+          </tr>
+        {% endif %}
+        {% if longest_p %}
+          <tr>
+            <td>The longest relationship: </td>
+              <td>
+                  <a class="" href="{% url 'person-detail' pk longest_p.source_person.id %}">{{longest_p.source_person.first_name}} {{longest_p.source_person.last_name}}</a>
+                  and <a class="" href="{% url 'person-detail' pk longest_p.related_person.id %}">{{longest_p.related_person.first_name}} {{longest_p.related_person.last_name}}</a>
+              </td>
+              <td>
+                  {{ interval_p }} years
+              </td>
+          </tr>
+        {% endif %}
+        {% if grandmother_num %}
+          <tr>
+            <td>Grandmother of the greatest number of grandchildren </td>
+              <td>
+                  <a class="" href="{% url 'person-detail' pk grandmother_num.id %}">{{grandmother_num.first_name}} {{grandmother_num.last_name}}</a>
+              </td>
+              <td>
+                  {{ num_grandchildren }}
+              </td>
+          </tr>
+        {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class='container'>
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+
+    <script>
+    $(document).ready(function(){
+      {% block jquery %}{% endblock %}
+      {% block jquery_age %}{% endblock %}
+      {% block jquery_name %}{% endblock %}
+    })
+    </script>
+  </body>
+{% endblock %}

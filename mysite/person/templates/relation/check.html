@@ -1,0 +1,33 @@
+{% extends 'users/base_template.html' %}
+{% load crispy_forms_tags %}
+{% block base %}
+<div class="container-sm my-3">
+      <form method="POST" id="relForm" data-people-url="{% url 'load_people' %}" >
+          {% csrf_token %}
+          {{ context.form|crispy }}
+            <button type="submit" class="btn btn-info">Search</button>
+            {% if context.text %}<div class="alert alert-primary my-2 "><p class="px-2" id="response">{{ context.text }}</p></div>{% endif %}
+      </form>
+</div>
+          <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+          <script>
+              $(function () {
+                  var pk_list = window.location.pathname.split('/');
+                  var key = pk_list[2];
+
+                  var url = $("#relForm").attr("data-people-url");
+
+                  $.ajax({
+                      url: url,
+                      data: {
+                          'family': key
+                        },
+                      success: function (data) {
+                          $("#id_source_person").html(data);
+                          $("#id_related_person").html(data);
+                      }
+                  });
+              })
+          </script>
+
+{% endblock %}
